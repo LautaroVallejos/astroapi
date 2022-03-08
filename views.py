@@ -1,58 +1,18 @@
-"""
-    REST-API aplication for astro issues
-    Author: Lautaro Vallejos
-"""
-# Resources
-#===================================>
-# from unicodedata import name
+from .models import Sign, signs_schema, db, sign_schema
+from .run import *
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
+from flask import Flask, request, jsonify
+# 
 
-# App init
-#===================================>
-app = Flask(__name__)
-# Database Configuration
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@127.0.0.1:3306/astromysql'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SQLALCHEMY_BINDS'] = 'mysql+pymysql://root:admin@127.0.0.1:3306/astromysql'
-
-# Plugins Instances
-#===================================>
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
-
-# Table Models Database
-#===================================>
-
-# Signs model DB
-#=========================>
-class Sign(db.Model):
-    __tablename__ = "Sign"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True)
-    description = db.Column(db.String(256))
-    ## ruling-planet = [Relacion con la tabla de planetas]
-    ## element = [Relacion con la tabla de elementos]
-    ## modality = [Relacion con la tabla de modalida]
-
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-
-db.create_all()
-
-class SignSchema(ma.Schema):
-    class Meta:
-        fields = ('id', 'name', 'description')
-
-sign_schema = SignSchema()
-signs_schema = SignSchema(many=True)
+# from core.models import Sign, signs_schema, db, sign_schema
 
 # Endpoints
 #===================================>
+# app = Flask(__name__)
+# db = SQLAlchemy(app)
+# ma = Marshmallow(app)
 
-# Index Endpoint
+#Index Endpoint
 #=========================>
 @app.route('/', methods=['GET'])
 def index():
@@ -112,7 +72,3 @@ def delete_sign(id):
     db.session.commit()
 
     return sign_schema.jsonify(sign)
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080)
-    app.run(debug=True)
