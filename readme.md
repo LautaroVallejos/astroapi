@@ -1,5 +1,7 @@
 <h1>Manual de desarrollador para la API</h1>
 
+Iniciar el xampp mysql
+
 <ul>
    <li><h3>1. Iniciar el venv: 
         source venv/bin/activate</h3></li>
